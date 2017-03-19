@@ -13,3 +13,32 @@ typedef struct List
     char* path; // path of the file
     int size; // size of the list 
 }List;
+
+// prototypes of functions
+
+/*
+* Creates new list
+*/
+List create_list(char* path);
+
+/*
+* Adds a new character to the list
+*/
+void add(List* L, char c);
+
+
+
+/*
+* reads a specified file path and loads the the text file into the memory
+*/
+int load(List* list);
+
+/*
+* frees all the elements of the list
+*/
+void destroy_nodes(node* N);
+
+/*
+* Destroys the list
+*/
+int destroy_list(List* list);
