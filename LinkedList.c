@@ -10,18 +10,18 @@
 /*
 * Creates new list
 */
-List create_list(char* path)
+List* create_list(char* path)
 {
     // allocates memory for the list and it's components
-    List l = malloc(sizeof(List));
-    node head = malloc(sizeof(node));
+    List* l = malloc(sizeof(List));
+    node* head = malloc(sizeof(node));
 
     // initializes the components of the list
     head->c = 0;
     head->next = NULL;
     l->head = head;
     l->size = 0;
-    l->tail = NULL;
+    l->tail = head;
     l->path = path;
     // success 
     return l;
@@ -30,10 +30,10 @@ List create_list(char* path)
 /*
 * Adds a new character to the list
 */
-void add(List* L, char c)
+void add(List* l, char c)
 {
     // if the list is not initialized
-    if(L == NULL)
+    if(l == NULL)
     {
         return;
     }
@@ -41,8 +41,7 @@ void add(List* L, char c)
     if(l->head->c == 0)
     {
         l->head->c = c;
-        l->tail = l->head->&next;
-        l->size++;
+		l->size++;
         return;
     }
     node* element = malloc(sizeof(node));
@@ -50,11 +49,12 @@ void add(List* L, char c)
     element->next = NULL;
     
     // puts the new element at the end of the list
-    l->*(tail) = element;
+	
+    l->tail->next = element;
 
     // updates the tail of the list
-    l->tail = element->&next;
-
+    l->tail = l->tail->next;
+	l->size++;
 
     
 
@@ -83,6 +83,8 @@ int load(List* list)
     {
         add(list, c);
     }
+	fclose(file);
+	return SUCCESS;
     
     
     
@@ -98,7 +100,7 @@ void destroy_nodes(node* N)
     {
         return;    
     }
-    destroy_node(N->next);
+    destroy_nodes(N->next);
     free(N);
     
 }
@@ -119,3 +121,28 @@ int destroy_list(List* list)
     return SUCCESS;
 
 }
+
+
+
+/*
+* Mainly for debugging purposes 
+*/
+void printl(List* L)
+{
+	// The list was passed Empty
+	if(L == NULL)
+	{
+		printf("Empty List");
+		return;
+	}
+	// prints every element in the list
+	node* current = L->head;
+	while(current != NULL)
+	{
+		printf("%c", current->c);
+		current = current->next;
+	}
+	printf("\nsize: %d\n", L->size);
+	
+}
+
